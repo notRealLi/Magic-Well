@@ -4,10 +4,10 @@ from flask_marshmallow import Marshmallow
 import GetOldTweets3 as got
 import os
 
-from flask_cors import CORS
+# from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 
 @app.route('/tweets/search', methods=['GET'])
