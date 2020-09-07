@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import GetOldTweets3 as got
+from tensorflow.keras import models
+import pickle
 import os
-
 from flask_cors import CORS
+from ai import sentiment
 
 app = Flask(__name__)
 CORS(app)
+
+model = models.load_model('./models/sequential.h5')
+tokenizer = pickle.load(open('./models/tokenizer.pkl', 'rb'))
 
 
 @app.route('/tweets/search', methods=['GET'])
@@ -20,6 +23,16 @@ def search_tweets():
     res = jsonify(results)
 
     return res
+
+
+@app.route('/ai/sentiment', methods=['GET'])
+def get_sentiment():
+    text = request.args.get('q')
+    sentiment_calculator = sentiment.SentimentCalculator()
+    result = sentiment_calculator.predict(text, model, tokenizer)
+    json = jsonify(result)
+
+    return json
 
 
 # Run server
