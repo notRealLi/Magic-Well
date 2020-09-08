@@ -23,4 +23,4 @@ class SentimentCalculator:
         score = model.predict([x])[0]
         label = self._calculate_sentiment(score)
 
-        return {'sentiment': label, 'score': float(score)}
+        return {'label': label, 'score': float(score)}
