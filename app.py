@@ -26,6 +26,8 @@ def search_tweets():
         sentiment_calculator = sentiment.SentimentCalculator()
         results = [{'text': text, 'sentiment':
                     sentiment_calculator.predict(text, model, tokenizer)} for text in results]
+    else:
+        results = [{'text': text} for text in results]
 
     res = jsonify(results)
 
