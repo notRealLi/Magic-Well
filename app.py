@@ -16,10 +16,17 @@ tokenizer = pickle.load(open('./models/tokenizer.pkl', 'rb'))
 @app.route('/tweets/search', methods=['GET'])
 def search_tweets():
     query = request.args.get('keywords')
-    count = 100
+    need_sentiment = request.args.get('sentiment')
+    count = 50
     criteria = got.manager.TweetCriteria().setQuerySearch(query).setMaxTweets(count)
     tweets = got.manager.TweetManager.getTweets(criteria)
     results = [tweet.text for tweet in tweets]
+
+    if need_sentiment != None:
+        sentiment_calculator = sentiment.SentimentCalculator()
+        results = [{'text': text, 'sentiment':
+                    sentiment_calculator.predict(text, model, tokenizer)} for text in results]
+
     res = jsonify(results)
 
     return res
