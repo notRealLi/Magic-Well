@@ -18,7 +18,7 @@
 
 ## Description
 
-An API that provides numerous services such as tweets scraping and data wrangling.
+An API that provides numerous services such as tweets querying and text sentiment analysis.
 
 #### Technologies
 
