@@ -5,6 +5,7 @@ import pickle
 import os
 from flask_cors import CORS
 from ai import sentiment
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -37,6 +38,12 @@ def search_tweets():
 @app.route('/ai/sentiment', methods=['GET'])
 def get_sentiment():
     text = request.args.get('q')
+    dirty = request.args.get('dirty')
+
+    if dirty != None:
+        text = re.sub(
+            '@\S+|https?:\S+|http?:\S|[^A-Za-z0-9]+', ' ', str(text).lower()).strip()
+
     sentiment_calculator = sentiment.SentimentCalculator()
     result = sentiment_calculator.predict(text, model, tokenizer)
     json = jsonify(result)
