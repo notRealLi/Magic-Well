@@ -21,14 +21,14 @@ def search_tweets():
     count = 50
     criteria = got.manager.TweetCriteria().setQuerySearch(query).setMaxTweets(count)
     tweets = got.manager.TweetManager.getTweets(criteria)
-    results = [tweet.text for tweet in tweets]
+    results = []
 
     if need_sentiment != None:
         sentiment_calculator = sentiment.SentimentCalculator()
-        results = [{'text': text, 'sentiment':
-                    sentiment_calculator.predict(text, model, tokenizer)} for text in results]
+        results = [{'text': tweet.text, 'id': tweet.id, 'sentiment':
+                    sentiment_calculator.predict(tweet.text, model, tokenizer)} for tweet in tweets]
     else:
-        results = [{'text': text} for text in results]
+        results = [{'text': tweet.text, 'id': tweet.id} for tweet in tweets]
 
     res = jsonify(results)
 
